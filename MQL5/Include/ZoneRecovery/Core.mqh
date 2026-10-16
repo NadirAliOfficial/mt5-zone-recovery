@@ -1,5 +1,5 @@
-#ifndef AZIZ_CORE_MQH
-#define AZIZ_CORE_MQH
+#ifndef ZONE_RECOVERY_CORE_MQH
+#define ZONE_RECOVERY_CORE_MQH
 // Pure functions shared by the EA and portable C++ regression tests.
 enum BasketTargetMode { TARGET_DOLLARS=0, TARGET_POINTS=1, TARGET_EITHER=2, TARGET_BOTH=3 };
 double RoundVolumeUp(double requested,double step)

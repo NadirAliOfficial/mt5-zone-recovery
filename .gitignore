@@ -5,6 +5,6 @@ __pycache__/
 work/
 *accounts.dat
 *servers.dat
-aziz-run.ini
+zr-run.ini
 *.zip
 *ticks.csv

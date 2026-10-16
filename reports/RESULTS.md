@@ -51,4 +51,4 @@ Raw broker ticks, account databases, API keys, client chat, and private terminal
 
 ## GitHub check status
 
-Public repository: https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5. The first Actions run ([38834089865](https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5/actions/runs/38834089865)) could not start: “The job was not started because an Actions budget is preventing further use.” No hosted test results exist. The local 32 shared-core checks and six replay fixtures passed; their output is retained in `validation.txt`. No billing settings were changed.
+Public repository: https://github.com/NadirAliOfficial/mt5-zone-recovery. The first Actions run ([38834089865](https://github.com/NadirAliOfficial/mt5-zone-recovery/actions/runs/38834089865)) could not start: “The job was not started because an Actions budget is preventing further use.” After public publication, [Actions run 38866735794](https://github.com/NadirAliOfficial/mt5-zone-recovery/actions/runs/38866735794) passed the core regression and replay checks. Local validation output is retained in `validation.txt`. No billing settings were changed.

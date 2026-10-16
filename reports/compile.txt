@@ -1,14 +1,14 @@
 
 
-[isolated terminal]\MQL5\Experts\AzizZoneRecovery\AzizZoneRecovery.mq5 : information: compiling [isolated terminal]\MQL5\Experts\AzizZoneRecovery\AzizZoneRecovery.mq5
-[isolated terminal]\MQL5\Experts\AzizZoneRecovery\AzizZoneRecovery.mq5 : information: including [isolated terminal]\MQL5\Include\Trade\Trade.mqh
+[isolated terminal]\MQL5\Experts\ZoneRecovery\ZoneRecovery.mq5 : information: compiling [isolated terminal]\MQL5\Experts\ZoneRecovery\ZoneRecovery.mq5
+[isolated terminal]\MQL5\Experts\ZoneRecovery\ZoneRecovery.mq5 : information: including [isolated terminal]\MQL5\Include\Trade\Trade.mqh
 [isolated terminal]\MQL5\Include\Trade\Trade.mqh : information: including [isolated terminal]\MQL5\Include\Object.mqh
 [isolated terminal]\MQL5\Include\Object.mqh : information: including [isolated terminal]\MQL5\Include\StdLibErr.mqh
 [isolated terminal]\MQL5\Include\Trade\Trade.mqh : information: including [isolated terminal]\MQL5\Include\Trade\OrderInfo.mqh
 [isolated terminal]\MQL5\Include\Trade\Trade.mqh : information: including [isolated terminal]\MQL5\Include\Trade\HistoryOrderInfo.mqh
 [isolated terminal]\MQL5\Include\Trade\Trade.mqh : information: including [isolated terminal]\MQL5\Include\Trade\PositionInfo.mqh
 [isolated terminal]\MQL5\Include\Trade\Trade.mqh : information: including [isolated terminal]\MQL5\Include\Trade\DealInfo.mqh
-[isolated terminal]\MQL5\Experts\AzizZoneRecovery\AzizZoneRecovery.mq5 : information: including [isolated terminal]\MQL5\Include\AzizZoneRecovery\Core.mqh
+[isolated terminal]\MQL5\Experts\ZoneRecovery\ZoneRecovery.mq5 : information: including [isolated terminal]\MQL5\Include\ZoneRecovery\Core.mqh
  : information: generating code
  : information: generating code 3%
  : information: generating code 6%
@@ -44,4 +44,4 @@
  : information: generating code 95%
  : information: generating code 100%
  : information: code generated
-Result: 0 errors, 0 warnings, 846 ms elapsed, cpu='X64 Regular'
+Result: 0 errors, 0 warnings, 890 ms elapsed, cpu='X64 Regular'

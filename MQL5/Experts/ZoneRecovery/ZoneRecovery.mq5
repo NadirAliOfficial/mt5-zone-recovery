@@ -2,7 +2,7 @@
 #property version "1.00"
 #property description "Two-level recovery EA. Hedging account required. Trading outside tester disabled by default."
 #include <Trade/Trade.mqh>
-#include <AzizZoneRecovery/Core.mqh>
+#include <ZoneRecovery/Core.mqh>
 
 input group "Entry and volume"
 input double InpStartingLot=0.01;
@@ -119,8 +119,8 @@ bool Executed(bool requested)
 bool OpenLeg(int direction,double lots)
 {
    int before=ReadBasket().count;
-   bool ok=direction==1 ? trade.Buy(lots,_Symbol,0,0,0,"Aziz recovery") :
-                          trade.Sell(lots,_Symbol,0,0,0,"Aziz recovery");
+   bool ok=direction==1 ? trade.Buy(lots,_Symbol,0,0,0,"Zone recovery") :
+                          trade.Sell(lots,_Symbol,0,0,0,"Zone recovery");
    if(!Executed(ok))
    {
       uint code=trade.ResultRetcode();
@@ -178,7 +178,7 @@ int OnInit()
    { Print("Dollar targets require USD account currency. Use points-only for other currencies."); return INIT_FAILED; }
    if(!MQLInfoInteger(MQL_TESTER) && !InpEnableTradingOutsideTester)
    { Print("Trading outside tester is disabled. Enable explicitly only after testing."); return INIT_FAILED; }
-   key=StringFormat("AZR.%I64d.%s.%I64u.",AccountInfoInteger(ACCOUNT_LOGIN),_Symbol,InpMagic);
+   key=StringFormat("ZRE.%I64d.%s.%I64u.",AccountInfoInteger(ACCOUNT_LOGIN),_Symbol,InpMagic);
    if(StringLen(key)>54) { Print("State key too long: shorten symbol/magic."); return INIT_FAILED; }
    trade.SetExpertMagicNumber(InpMagic); trade.SetDeviationInPoints(InpDeviationPoints);
    trade.SetAsyncMode(false); trade.SetTypeFillingBySymbol(_Symbol);
@@ -208,7 +208,7 @@ int OnInit()
          halted=GlobalVariableGet(key+"halted")>0;
       ResetBasket();
    }
-   PrintFormat("Aziz recovery initialized: mode=%d multiplier=%.2f grid=%.0f points",InpTargetMode,InpMultiplier,InpGridPoints);
+   PrintFormat("Zone recovery initialized: mode=%d multiplier=%.2f grid=%.0f points",InpTargetMode,InpMultiplier,InpGridPoints);
    return INIT_SUCCEEDED;
 }
 void OnTick()

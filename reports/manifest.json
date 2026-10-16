@@ -1,7 +1,7 @@
 {
-  "MQL5/Experts/AzizZoneRecovery/AzizZoneRecovery.mq5": "ec7f8bf110c5f9bb7ca9054e0a100989d6495a8c7670526227de00c82adba4ff",
-  "MQL5/Experts/AzizZoneRecovery/AzizZoneRecovery.ex5": "0440ae5e5120c14774aff61116cc939df25b0ed762c487ce470d5e31da1a3d69",
-  "MQL5/Include/AzizZoneRecovery/Core.mqh": "fe4924dd14c687bc7d89c103edf13b9f3045fb2c7f685a62292eb4d290e288ad",
+  "MQL5/Experts/ZoneRecovery/ZoneRecovery.mq5": "f021fea7bc1e469fb0dcacdbfb1a5c7a2793df4c309e05043f0f6a11b0086daf",
+  "MQL5/Experts/ZoneRecovery/ZoneRecovery.ex5": "3c13cffd051e33d94e481628760cb78fc1ef375c9dd796d0b06e3107117f7913",
+  "MQL5/Include/ZoneRecovery/Core.mqh": "dd08e3b5535051d77f9508598ba6859dade93d187a2f20385de077038ab408cd",
   "tools/replay.py": "8ad3fa97d5b7cedf74e8f76f7aeea64d4eb7c85f8a70e1e0bda21ddfd9f366f8",
   "exported_tick_csv_sha256": "a7241331643209236839dce1e4b4c3548f9f68497c3bf68385fb62ca12b7663d",
   "tick_count": 3936375

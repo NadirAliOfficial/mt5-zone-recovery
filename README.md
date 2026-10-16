@@ -1,11 +1,11 @@
 # MT5 Zone Recovery Expert Advisor
 
-[![Core regression checks](https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5/actions/workflows/checks.yml/badge.svg)](https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5/actions/workflows/checks.yml)
+[![Core regression checks](https://github.com/NadirAliOfficial/mt5-zone-recovery/actions/workflows/checks.yml/badge.svg)](https://github.com/NadirAliOfficial/mt5-zone-recovery/actions/workflows/checks.yml)
 [![Platform: MetaTrader 5](https://img.shields.io/badge/platform-MetaTrader_5-2563eb)](https://www.metatrader5.com/)
 [![Language: MQL5](https://img.shields.io/badge/language-MQL5-0f766e)](https://www.mql5.com/en/docs)
 [![Tools: Python CLI](https://img.shields.io/badge/tools-Python_CLI-f59e0b)](tools/mt5_cli.py)
 
-**Aziz Zone Recovery** is a MetaTrader 5 Expert Advisor written in **MQL5**, with two-level hedging, adjustable lot multiplication, basket take profit, and command-line research tools. It combines the MT5 EA source and compiled EX5 with a native compiler workflow, historical bid/ask tick export, and an independent Python backtesting replay.
+**MT5 Zone Recovery** is a MetaTrader 5 Expert Advisor written in **MQL5**, with two-level hedging, adjustable lot multiplication, basket take profit, and command-line research tools. It combines the MT5 EA source and compiled EX5 with a native compiler workflow, historical bid/ask tick export, and an independent Python backtesting replay.
 
 **Research status:** the EA compiles with zero errors/warnings, and 38 local checks passed. Every reported historical replay setting lost money. Native MT5 Strategy Tester execution remains unverified in the test environment. Read the [measured results and limitations](reports/RESULTS.md) before evaluating the strategy.
 
@@ -31,12 +31,12 @@ Requires a **hedging account**; netting accounts are unsupported. The strategy u
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5.git
-   cd aziz-zone-recovery-mt5
+   git clone https://github.com/NadirAliOfficial/mt5-zone-recovery.git
+   cd mt5-zone-recovery
    ```
 
 2. Copy the contents of `MQL5/` to an isolated MetaTrader 5 test installation's `MQL5/` folder.
-3. Open `MQL5/Experts/AzizZoneRecovery/AzizZoneRecovery.mq5` in MetaEditor and compile it, or use the CLI below.
+3. Open `MQL5/Experts/ZoneRecovery/ZoneRecovery.mq5` in MetaEditor and compile it, or use the CLI below.
 4. Review `configs/eurusd-dollars.ini` and the [input settings](#inputs). Test with a demo hedging account and your broker's symbol specifications.
 
 Windows CLI example, using an existing saved demo login:
@@ -106,7 +106,7 @@ Defaults are demonstration settings, not selected or optimized for profitability
 - Manages only the current symbol and magic. One chart per symbol/magic, with a terminal-global ownership lock.
 - Uses bid levels for both reversal triggers, and actual bid/ask for trade exits. On a gap, opens at the available market price, not an invented historical trigger fill.
 - Stores basket state in terminal globals after fills and before liquidation. A restart with missing/inconsistent state refuses initialization. Do not change strategy inputs during an open basket.
-- A manual/external change in own position count or total volume halts automatic management for inspection (except an already-latched liquidation, which continues). After manually closing all positions, the halt persists. To clear it, remove the EA, ensure the basket is flat, and delete only that instance's `AZR.<login>.<symbol>.<magic>.` terminal globals before reattaching.
+- A manual/external change in own position count or total volume halts automatic management for inspection (except an already-latched liquidation, which continues). After manually closing all positions, the halt persists. To clear it, remove the EA, ensure the basket is flat, and delete only that instance's `ZRE.<login>.<symbol>.<magic>.` terminal globals before reattaching.
 - Partial entry fills stop further recovery additions; current positions remain managed. Broker rejections are logged. There is no stop loss or emergency equity cutoff in the requested logic.
 - The EA submits market orders on observed ticks. It has no server-side protective orders, so the terminal must remain connected and running.
 - Rounding up can increase exposure faster than the exact mathematical multiplier. Volumes outside broker/user limits are refused rather than silently capped.
@@ -114,7 +114,7 @@ Defaults are demonstration settings, not selected or optimized for profitability
 
 ## Install and compile
 
-Copy the contents of `MQL5/` into an **isolated** MT5 portable terminal's `MQL5/` directory. Compile `Experts/AzizZoneRecovery/AzizZoneRecovery.mq5` with MetaEditor. Standard `Trade` includes are supplied by MT5. The compiled `.ex5` is included after verified compilation.
+Copy the contents of `MQL5/` into an **isolated** MT5 portable terminal's `MQL5/` directory. Compile `Experts/ZoneRecovery/ZoneRecovery.mq5` with MetaEditor. Standard `Trade` includes are supplied by MT5. The compiled `.ex5` is included after verified compilation.
 
 Native Windows CLI:
 
@@ -138,8 +138,8 @@ A saved demo account is needed by this installed MT5 build to initialize the tes
 Shared-core tests compile the **same shipped `.mqh` arithmetic/trigger functions**, using C++ math aliases; they do not replace native MT5 execution:
 
 ```sh
-c++ -std=c++17 -Wall -Wextra -Werror tests/core_test.cpp -o /tmp/aziz-core-test
-/tmp/aziz-core-test
+c++ -std=c++17 -Wall -Wextra -Werror tests/core_test.cpp -o /tmp/zr-core-test
+/tmp/zr-core-test
 ```
 
 On macOS, use a matching compiler/SDK if the system command-line SDK is newer than the linker. Tests cover lot rounding, limits, auto-lot arithmetic, alternating triggers, target modes, and recovery profit/loss arithmetic.
@@ -152,7 +152,7 @@ Export the fixed research date range (2025-01-02 through 2025-03-31) using a sav
 
 ```sh
 python3 tools/mt5_cli.py --terminal /path/to/test/terminal [Wine options] export --login YOUR_SAVED_DEMO_LOGIN
-python3 tools/replay.py /path/to/test/terminal/MQL5/Files/aziz-eurusd-ticks.csv \
+python3 tools/replay.py /path/to/test/terminal/MQL5/Files/zr-eurusd-ticks.csv \
   --multiplier 2 --mode dollars --commission 7 --seed 42 --output reports/replay-baseline.json
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
@@ -165,8 +165,8 @@ See `reports/RESULTS.md` for measured results and test limitations. Treat the ro
 
 ```text
 MQL5/
-  Experts/AzizZoneRecovery/   EA source (.mq5) and compiled binary (.ex5)
-  Include/AzizZoneRecovery/   Shared strategy arithmetic and trigger functions
+  Experts/ZoneRecovery/   EA source (.mq5) and compiled binary (.ex5)
+  Include/ZoneRecovery/   Shared strategy arithmetic and trigger functions
   Scripts/                   Read-only historical tick exporter
 configs/                     EURUSD native tester configuration examples
 reports/                     Results, replay JSON, compiler evidence, hashes
@@ -178,7 +178,7 @@ tools/                      Compile/export/test CLI and tick replay engine
 
 ## Contributing
 
-[Report a bug](https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5/issues/new) with the MT5 build, hedging-account type, symbol specification, EA input settings, expected behavior, and a minimal reproducible case. Remove account identifiers and credentials from logs before sharing them.
+[Report a bug](https://github.com/NadirAliOfficial/mt5-zone-recovery/issues/new) with the MT5 build, hedging-account type, symbol specification, EA input settings, expected behavior, and a minimal reproducible case. Remove account identifiers and credentials from logs before sharing them.
 
 For changes, run the C++ core checks and Python replay tests described above. Keep native MT5 execution evidence separate from independent replay results. Strategy changes should include a clear explanation of how they alter entry levels, lot sizes, costs, or basket exits.
 

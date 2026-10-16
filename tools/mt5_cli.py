@@ -45,9 +45,9 @@ def run():
     if args.action == 'compile':
         shutil.copytree(REPO / 'MQL5', terminal / 'MQL5', dirs_exist_ok=True,
                         ignore=shutil.ignore_patterns('*.ex5'))
-        log = terminal / 'aziz-compile.log'
+        log = terminal / 'zr-compile.log'
         log.unlink(missing_ok=True)
-        source = terminal / 'MQL5/Experts/AzizZoneRecovery/AzizZoneRecovery.mq5'
+        source = terminal / 'MQL5/Experts/ZoneRecovery/ZoneRecovery.mq5'
         launch('MetaEditor64.exe', '/portable', '/compile:' + windows(source),
                '/log:' + windows(log))
         text = log.read_text(encoding='utf-16') if log.exists() else ''
@@ -56,29 +56,29 @@ def run():
         if '0 errors, 0 warnings' not in text:
             sys.exit(1)
         shutil.copy2(source.with_suffix('.ex5'),
-                     REPO / 'MQL5/Experts/AzizZoneRecovery/AzizZoneRecovery.ex5')
+                     REPO / 'MQL5/Experts/ZoneRecovery/ZoneRecovery.ex5')
     elif args.action == 'export':
-        source = terminal / 'MQL5/Scripts/ExportAzizTicks.mq5'
+        source = terminal / 'MQL5/Scripts/ExportTicks.mq5'
         source.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(REPO / 'MQL5/Scripts/ExportAzizTicks.mq5', source)
-        log = terminal / 'aziz-export-compile.log'
+        shutil.copy2(REPO / 'MQL5/Scripts/ExportTicks.mq5', source)
+        log = terminal / 'zr-export-compile.log'
         log.unlink(missing_ok=True)
         launch('MetaEditor64.exe', '/portable', '/compile:' + windows(source),
                '/log:' + windows(log))
         text = log.read_text(encoding='utf-16') if log.exists() else ''
         if '0 errors, 0 warnings' not in text:
-            sys.exit('Exporter compilation failed; inspect aziz-export-compile.log')
+            sys.exit('Exporter compilation failed; inspect zr-export-compile.log')
         config = configparser.ConfigParser(interpolation=None)
         config.optionxform = str
         config['Common'] = {'Server': 'MetaQuotes-Demo', 'Login': str(args.login), 'KeepPrivate': '0'}
         config['Experts'] = {'AllowLiveTrading': '0', 'AllowDllImport': '0', 'Enabled': '1'}
-        config['StartUp'] = {'Script': 'ExportAzizTicks', 'Symbol': 'EURUSD',
+        config['StartUp'] = {'Script': 'ExportTicks', 'Symbol': 'EURUSD',
                              'Period': 'M1', 'ShutdownTerminal': '1'}
-        private_config = terminal / 'aziz-run.ini'
+        private_config = terminal / 'zr-run.ini'
         with private_config.open('w') as handle:
             config.write(handle, space_around_delimiters=False)
         private_config.chmod(0o600)
-        ticks = terminal / 'MQL5/Files/aziz-eurusd-ticks.csv'
+        ticks = terminal / 'MQL5/Files/zr-eurusd-ticks.csv'
         ticks.unlink(missing_ok=True)
         try:
             launch('terminal64.exe', '/portable', '/config:' + windows(private_config))
@@ -99,7 +99,7 @@ def run():
         if args.login:
             config['Common']['Login'] = str(args.login)
         if config.has_section('TesterInputs'):
-            preset_name = 'aziz-' + args.config.stem + '.set'
+            preset_name = 'zr-' + args.config.stem + '.set'
             preset = terminal / 'MQL5/Profiles/Tester' / preset_name
             preset.parent.mkdir(parents=True, exist_ok=True)
             preset.write_text(''.join(key + '=' + value + '\n'
@@ -112,7 +112,7 @@ def run():
         report = terminal / relative
         report.parent.mkdir(parents=True, exist_ok=True)
         report.unlink(missing_ok=True)
-        private_config = terminal / 'aziz-run.ini'
+        private_config = terminal / 'zr-run.ini'
         with private_config.open('w') as handle:
             config.write(handle, space_around_delimiters=False)
         private_config.chmod(0o600)

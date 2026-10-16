@@ -4,7 +4,7 @@ void OnStart()
 {
    string symbol="EURUSD";
    if(!SymbolSelect(symbol,true)) { Print("EXPORT_FAIL symbol"); return; }
-   int file=FileOpen("aziz-eurusd-ticks.csv",FILE_WRITE|FILE_CSV|FILE_ANSI,',');
+   int file=FileOpen("zr-eurusd-ticks.csv",FILE_WRITE|FILE_CSV|FILE_ANSI,',');
    if(file==INVALID_HANDLE) { Print("EXPORT_FAIL file"); return; }
    FileWrite(file,"time_msc","bid","ask");
    long total=0;

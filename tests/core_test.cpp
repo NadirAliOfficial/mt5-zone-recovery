@@ -2,7 +2,7 @@
 #include <cassert>
 #include <iostream>
 #define MathCeil std::ceil
-#include "../MQL5/Include/AzizZoneRecovery/Core.mqh"
+#include "../MQL5/Include/ZoneRecovery/Core.mqh"
 int main() {
  int checks=0;
  auto check=[&](bool ok){assert(ok);++checks;};
