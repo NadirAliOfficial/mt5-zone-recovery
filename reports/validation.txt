@@ -1,0 +1,13 @@
+32 shared-core checks passed
+
+test_fixed_points_equivalent_to_dollars_at_base_lot (test_replay.ReplayTests) ... ok
+test_initial_tp_uses_executable_bid (test_replay.ReplayTests) ... ok
+test_recovery_pays_original_loss_and_spread (test_replay.ReplayTests) ... ok
+test_round_turn_cost_delays_exit (test_replay.ReplayTests) ... ok
+test_trade_cap_stops_additions (test_replay.ReplayTests) ... ok
+test_unresolved_loss_not_hidden (test_replay.ReplayTests) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.003s
+
+OK

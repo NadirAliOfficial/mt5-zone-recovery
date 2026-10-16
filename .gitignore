@@ -1,0 +1,10 @@
+.DS_Store
+__pycache__/
+*.pyc
+.env
+work/
+*accounts.dat
+*servers.dat
+aziz-run.ini
+*.zip
+*ticks.csv

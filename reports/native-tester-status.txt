@@ -1,0 +1,22 @@
+Native tester attempts: startup and demo synchronization succeeded, but no tester job, deal history, or report was produced. The agent service initialized locally but did not receive a job. Do not interpret these startup messages as a completed backtest. EA compile and read-only tick export succeeded.
+
+MD	0	05:54:57.480	Terminal	MetaTrader 5 x64 build 6140 started for MetaQuotes Ltd.
+NL	0	05:55:49.003	Terminal	MetaTrader 5 x64 build 6140 started for MetaQuotes Ltd.
+EJ	0	05:55:53.711	Tester	automatic testing started
+HM	0	05:55:53.918	AutoTesting	EURUSD: preliminary downloading of M1 history started
+CQ	0	05:55:54.019	AutoTesting	EURUSD: preliminary downloading of M1 history completed in 0:00:00.302
+KM	0	06:02:02.136	Terminal	MetaTrader 5 x64 build 6140 started for MetaQuotes Ltd.
+EG	0	06:02:06.413	Tester	automatic testing started
+QQ	0	06:02:46.747	Terminal	MetaTrader 5 x64 build 6140 started for MetaQuotes Ltd.
+JK	0	06:02:51.285	Tester	automatic testing started
+KF	0	06:03:39.643	Terminal	MetaTrader 5 x64 build 6140 started for MetaQuotes Ltd.
+OQ	0	06:03:39.644	Terminal	Windows 10 build 19043 on Wine 10.0 Darwin 27.0.0, 12 x VirtualApple @ 2.50GHz, x64, 5 / 23 Gb memory, 99 / 460 Gb disk, GMT+5
+IK	0	06:03:43.882	Tester	automatic testing started
+QE	0	06:05:19.119	Terminal	MetaTrader 5 x64 build 6140 started for MetaQuotes Ltd.
+PQ	0	06:05:19.119	Terminal	Windows 10 build 19043 on Wine 10.0 Darwin 27.0.0, 12 x VirtualApple @ 2.50GHz, x64, 5 / 23 Gb memory, 99 / 460 Gb disk, GMT+5
+CJ	0	06:05:23.583	Tester	automatic testing started
+JO	0	06:06:35.175	Terminal	MetaTrader 5 x64 build 6140 started for MetaQuotes Ltd.
+JF	0	06:06:35.176	Terminal	Windows 10 build 19043 on Wine 10.0 Darwin 27.0.0, 12 x VirtualApple @ 2.50GHz, x64, 5 / 23 Gb memory, 99 / 460 Gb disk, GMT+5
+GO	0	06:06:39.639	Tester	automatic testing started
+JR	0	06:07:59.444	Terminal	MetaTrader 5 x64 build 6140 started for MetaQuotes Ltd.
+HJ	0	06:07:59.445	Terminal	Windows 10 build 19043 on Wine 10.0 Darwin 27.0.0, 12 x VirtualApple @ 2.50GHz, x64, 5 / 23 Gb memory, 99 / 460 Gb disk, GMT+5

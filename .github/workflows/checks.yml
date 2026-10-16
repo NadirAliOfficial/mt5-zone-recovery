@@ -1,0 +1,17 @@
+name: Core regression checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run shared strategy arithmetic and trigger checks
+        run: |
+          c++ -std=c++17 -Wall -Wextra -Werror tests/core_test.cpp -o /tmp/core-test
+          /tmp/core-test
+      - name: Test replay execution and accounting
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Check command-line tool syntax
+        run: python3 -m py_compile tools/mt5_cli.py tools/replay.py
