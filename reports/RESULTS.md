@@ -48,3 +48,7 @@ A high fraction of winning baskets does not make this strategy profitable. The 2
 - `../tools/replay.py`: independent replay command.
 
 Raw broker ticks, account databases, API keys, client chat, and private terminal configuration are excluded from the repository and delivery ZIP. Repeat broker tests in an isolated terminal before enabling chart trading. The default EA refuses trading outside the tester unless explicitly enabled.
+
+## GitHub check status
+
+Private repository: https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5. The first Actions run ([38834089865](https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5/actions/runs/38834089865)) could not start: “The job was not started because an Actions budget is preventing further use.” No hosted test results exist. The local 32 shared-core checks and six replay fixtures passed; their output is retained in `validation.txt`. No billing settings were changed.
