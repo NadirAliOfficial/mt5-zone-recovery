@@ -1,13 +1,71 @@
-# Aziz Zone Recovery — MT5
+# MT5 Zone Recovery Expert Advisor
 
-MT5 Expert Advisor implementing random first entry and alternating hedged recovery at **two fixed levels**, with a configurable multiplier and fixed net basket target. Requires a **hedging account**. No indicators or timeframe signals.
+[![Core regression checks](https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5/actions/workflows/checks.yml/badge.svg)](https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5/actions/workflows/checks.yml)
+[![Platform: MetaTrader 5](https://img.shields.io/badge/platform-MetaTrader_5-2563eb)](https://www.metatrader5.com/)
+[![Language: MQL5](https://img.shields.io/badge/language-MQL5-0f766e)](https://www.mql5.com/en/docs)
+[![Tools: Python CLI](https://img.shields.io/badge/tools-Python_CLI-f59e0b)](tools/mt5_cli.py)
+
+**Aziz Zone Recovery** is a MetaTrader 5 Expert Advisor written in **MQL5**, with two-level hedging, adjustable lot multiplication, basket take profit, and command-line research tools. It combines the MT5 EA source and compiled EX5 with a native compiler workflow, historical bid/ask tick export, and an independent Python backtesting replay.
+
+**Research status:** the EA compiles with zero errors/warnings, and 38 local checks passed. Every reported historical replay setting lost money. Native MT5 Strategy Tester execution remains unverified in the test environment. Read the [measured results and limitations](reports/RESULTS.md) before evaluating the strategy.
+
+## Features
+
+- **Two-level zone recovery:** random initial buy/sell, then alternating hedge entries at fixed levels.
+- **Adjustable lot multiplier:** 1.5×, 2×, 3× or another value greater than one, with broker-step rounding.
+- **Basket take profit:** fixed USD or equivalent-point targets, plus either/both modes.
+- **Fixed or automatic starting lot:** optional balance-based volume, such as .01 lots per 1,000 account-currency units.
+- **Trade and lot limits:** stop adding recovery legs at configured limits while monitoring the basket.
+- **Execution safeguards:** symbol/magic isolation, spread filtering, fill return-code checks, persisted state, and a liquidation retry latch.
+- **CLI tooling:** compile MQL5, request native tester runs, export historical ticks, and run independent replays.
+- **Transparent evidence:** source, compiled binary, test fixtures, dataset hash, settings, and loss-inclusive reports.
+
+Requires a **hedging account**; netting accounts are unsupported. The strategy uses no indicators or timeframe signals. Lot multiplication increases exposure, and trade/lot limits do not cap losses.
+
+## Contents
+
+[Quick start](#quick-start) · [Strategy](#strategy) · [Basket targets](#target-modes-and-costs) · [Inputs](#inputs) · [Execution limits](#execution-restarts-and-limitations) · [Compile and test](#install-and-compile) · [Historical results](#measured-validation-and-historical-replay) · [Project structure](#project-structure) · [Contributing](#contributing)
+
+## Quick start
+
+1. Clone the repository:
+
+   ```sh
+   git clone https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5.git
+   cd aziz-zone-recovery-mt5
+   ```
+
+2. Copy the contents of `MQL5/` to an isolated MetaTrader 5 test installation's `MQL5/` folder.
+3. Open `MQL5/Experts/AzizZoneRecovery/AzizZoneRecovery.mq5` in MetaEditor and compile it, or use the CLI below.
+4. Review `configs/eurusd-dollars.ini` and the [input settings](#inputs). Test with a demo hedging account and your broker's symbol specifications.
+
+Windows CLI example, using an existing saved demo login:
+
+```powershell
+python tools/mt5_cli.py --terminal C:\MT5-Test compile
+python tools/mt5_cli.py --terminal C:\MT5-Test test configs/eurusd-dollars.ini --login YOUR_SAVED_DEMO_LOGIN
+```
+
+The EA defaults to `InpEnableTradingOutsideTester=false`, so attaching the default configuration to a chart does not enable trading. See [installation and compilation](#install-and-compile) for Wine/macOS options.
+
+## Research results at a glance
+
+Independent EURUSD bid/ask replay, January–March 2025, initial balance **$1,000**, seed 42:
+
+| Lot multiplier | Ending balance | Net P/L | Maximum equity drawdown |
+|---|---:|---:|---:|
+| 1.5× | $728.91 | −$271.09 | 36.35% |
+| 2× | $413.48 | −$586.52 | 75.42% |
+| 3× | $212.64 | −$787.36 | 82.30% |
+
+These are **independent replay results, not native MT5 Strategy Tester results**. The 3× run hit the simulated stop-out threshold before the end of the period. Other runs include liquidation of unresolved positions at the final quote. Assumptions include $7/lot round-turn commission, zero swap/slippage/delay, and conservative gross margin. [Full settings, data provenance, and limitations →](reports/RESULTS.md)
 
 ## Strategy
 
 1. With no own positions, choose BUY or SELL using a seeded random generator. Use a fixed starting lot or `balance / capital_per_lot_unit * lot_unit`.
 2. Close a lone initial trade when its executable close price has moved `InitialTPPoints` favorably from its fill and its net P/L is positive. Begin a new cycle on a later tick.
 3. If the market reverses `GridPoints` from the first bid reference, keep the original position and open an opposite leg. Alternate between the original two bid levels; do not shift a trailing grid along the trend.
-4. Multiply the **last executed lot** for each new leg. Round **up** to the broker's volume step. Thus 2× gives .01, .02, .04, .08, .16; 1.5× at .01 step gives .01, .02, .03, .05, .08. The duplicated lots in the supplied diagrams are treated as diagram errors.
+4. Multiply the **last executed lot** for each new leg. Round **up** to the broker's volume step. Thus 2× gives .01, .02, .04, .08, .16; 1.5× at .01 step gives .01, .02, .03, .05, .08. This implementation multiplies every successive leg without intentionally repeating lot sizes.
 5. After the second leg, use a basket target instead of the initial trade target. Close own positions by ticket and restart only when all close requests have succeeded.
 6. Max trades or max lot stops further entries for that basket. Existing positions remain open and eligible for basket closure. These limits **do not cap financial loss**. A basket can remain unresolved indefinitely.
 
@@ -18,7 +76,7 @@ MT5 Expert Advisor implementing random first entry and alternating hedged recove
 - `TARGET_EITHER`: close when either target is reached.
 - `TARGET_BOTH`: close only when both are reached.
 
-Both numerical targets are independent inputs; neither rises with trade count. The chosen points definition and selectable/combined modes are implementation assumptions pending client acceptance.
+Both numerical targets are independent inputs; neither rises with trade count. The points definition is an explicit implementation choice; review it when comparing this EA with other basket-target systems.
 
 P/L includes MT5 floating profit, position swap, and paid deal commission/fees for open position IDs. `ExitCommissionPerLot` deducts an estimate of remaining close costs; set it for the broker. Exact future fills/fees are unknowable. Spread enters through actual bid/ask P/L. Sequential market closes are not simultaneous or atomic; slippage can change the final realized result.
 
@@ -41,7 +99,7 @@ P/L includes MT5 floating profit, position swap, and paid deal commission/fees f
 | RandomSeed | 42 | Reproducible seed; 0 seeds from local time |
 | EnableTradingOutsideTester | false | Explicit opt-in required for chart trading |
 
-Defaults are demonstration settings, not selected or optimized for profitability. No symbol or account size was specified by the client; historical test settings are disclosed in the reports.
+Defaults are demonstration settings, not selected or optimized for profitability. The included EURUSD and account-size settings are research examples; all historical test settings are disclosed in the reports.
 
 ## Execution, restarts, and limitations
 
@@ -84,7 +142,7 @@ c++ -std=c++17 -Wall -Wextra -Werror tests/core_test.cpp -o /tmp/aziz-core-test
 /tmp/aziz-core-test
 ```
 
-On macOS, use a matching compiler/SDK if the system command-line SDK is newer than the linker. Tests cover lot rounding, limits, auto-lot arithmetic, alternating triggers, target modes, and the incorrect recovery arithmetic in the client's diagram.
+On macOS, use a matching compiler/SDK if the system command-line SDK is newer than the linker. Tests cover lot rounding, limits, auto-lot arithmetic, alternating triggers, target modes, and recovery profit/loss arithmetic.
 
 ## Measured validation and historical replay
 
@@ -102,6 +160,27 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 `[Wine options]` means the actual `--wine` and `--wine-prefix` options shown above; omit those on Windows. The exporter overwrites its named CSV in the test terminal. Raw tick data and saved-account configuration are deliberately excluded from Git. The replay assumes $7/lot round-turn commission, zero swap/slippage/delay, conservative gross margin, and liquidation of residual exposure at the last quote. These are research assumptions, **not broker execution or fee verification**. MT5 account/broker validation is still required, including restart/partial-fill/manual-interference behavior.
 
 See `reports/RESULTS.md` for measured results and test limitations. Treat the robot as a technical implementation for review; historical results do not establish future profitability.
+
+## Project structure
+
+```text
+MQL5/
+  Experts/AzizZoneRecovery/   EA source (.mq5) and compiled binary (.ex5)
+  Include/AzizZoneRecovery/   Shared strategy arithmetic and trigger functions
+  Scripts/                   Read-only historical tick exporter
+configs/                     EURUSD native tester configuration examples
+reports/                     Results, replay JSON, compiler evidence, hashes
+tests/                      Shared-core C++ checks and Python replay fixtures
+tools/                      Compile/export/test CLI and tick replay engine
+```
+
+`HANDOVER.md` records implementation decisions and outstanding integration checks. Raw broker tick files, account credentials, and private terminal configuration are excluded.
+
+## Contributing
+
+[Report a bug](https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5/issues/new) with the MT5 build, hedging-account type, symbol specification, EA input settings, expected behavior, and a minimal reproducible case. Remove account identifiers and credentials from logs before sharing them.
+
+For changes, run the C++ core checks and Python replay tests described above. Keep native MT5 execution evidence separate from independent replay results. Strategy changes should include a clear explanation of how they alter entry levels, lot sizes, costs, or basket exits.
 
 ## Official references
 

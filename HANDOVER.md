@@ -3,6 +3,8 @@
 Updated: 2026-10-16 (Asia/Karachi).
 
 ## Completed
+- User explicitly requested public visibility and README/discovery improvements. Repository is now public; added a descriptive About summary, 17 relevant topics, a results homepage link, README badges/overview/quick start/results/navigation/contributing, and manual CI dispatch support.
+- Existing source, compiled EA, and numerical research results are unchanged. Committed history scanned for credential patterns and excluded private files before public exposure.
 - Built the MT5 hedging EA in `MQL5/Experts/AzizZoneRecovery/`, with shared arithmetic in `MQL5/Include/AzizZoneRecovery/`.
 - Native MetaEditor compilation passed with zero errors and zero warnings; compiled EX5 included.
 - Added reproducible CLI tools, four tester configurations, a read-only tick exporter, 32 shared-core checks, six economic replay fixtures, and GitHub Actions checks.
@@ -11,7 +13,7 @@ Updated: 2026-10-16 (Asia/Karachi).
 - From $1,000: final balances $728.91 (1.5×), $413.48 (2×), $212.64 (3×). The 3× replay stops out under its modeled margin rules; other runs include forced end-date liquidation. These are simulated results, not native Strategy Tester figures.
 
 ## Rules and decisions
-- User authorized building, CLI backtesting, and pushing to GitHub. Source, binary, tests, and results pushed to verified private repository: https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5 (main).
+- User authorized building, CLI backtesting, and pushing to GitHub. Source, binary, tests, and results pushed to verified public repository: https://github.com/NadirAliOfficial/aziz-zone-recovery-mt5 (main).
 - Client confirmed adjustable multiplier and fixed basket target with dollar and point options.
 - Implemented random first entry, two fixed bid-coordinate levels, strict multiplication of previous filled lot, broker-step rounding upward, initial trade TP, shared basket exits, fixed/auto initial lot, max trades/max lot, and restart/liquidation state.
 - Basket points mean net P/L divided by the value of one broker point at the initial lot. Dollar/point/either/both modes included. USD accounts required for dollar modes.
